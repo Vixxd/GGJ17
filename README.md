@@ -1,7 +1,6 @@
 # GGJ17
 Our repository for our Global Game Jam 2017 Unity Project
 
-----
 ## Useful Links
 * Indie Resources Guide: http://www.pixelprospector.com/indie-resources/
 * Unity Global Game Jam Starter Kit: https://www.assetstore.unity3d.com/en/#!/list/34942-global-game-jam-starter-kit
@@ -10,11 +9,9 @@ Our repository for our Global Game Jam 2017 Unity Project
 
 
 ## Additional Information
-----
 * Game Accessibility Guidelines: http://gameaccessibilityguidelines.com/
 
 ## Tools Vicky has access to
-----
 * SpriteIlluminator
 * PICO-8 (Alpha)	
 * Voxatron (Alpha)
