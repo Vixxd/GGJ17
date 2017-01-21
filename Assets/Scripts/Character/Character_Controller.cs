@@ -93,10 +93,14 @@ public class Character_Controller : MonoBehaviour
             case GameEnums.GameState.Start:
                 canMove = false;
                 transform.position = initialPos;
+
+                playerRigidBody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
                 break;
             case GameEnums.GameState.Game:
                 canMove = true;
                 isAlive = true;
+
+                playerRigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
                 break;
             case GameEnums.GameState.GameOver:
                 canMove = false;
