@@ -10,7 +10,6 @@ public class Character_GroundCheck : MonoBehaviour
     {
         if(col.gameObject.tag == "Ground")
         {
-            Debug.Log("On ground");
             character_Controller.Grounded = true;
         }
     }

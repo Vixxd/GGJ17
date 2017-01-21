@@ -12,16 +12,21 @@ public class Character_Controller : MonoBehaviour
     public float playerSpeed = 5.0f;
     public bool Grounded = false;
 
-    private bool canMove = true;
+    private bool canMove = false;
+    private bool isAlive = true;
+
+    private Vector2 initialPos;
 
     void Start()
     {
+        initialPos = transform.position;
+
         StartCoroutine(getPlayerInput());
 	}
 
     void OnEnable()
     {
-        GameManager.Instance.OnToggleInput += Instance_OnToggleInput;
+        GameManager.Instance.OnGameStateChange += Instance_OnGameStateChange;
     }
 
     //void OnDisable()
@@ -31,26 +36,53 @@ public class Character_Controller : MonoBehaviour
 
     private IEnumerator getPlayerInput()
     {
-        while(canMove)
+        while(true)
         {
-            //playerRigidBody.velocity = new Vector2(Input.GetAxis(playerMoveInput_Name) * speed, playerRigidBody.velocity.y);
-            playerRigidBody.velocity = new Vector2(Input.GetAxis(playerMoveInputController_Name) * playerSpeed, playerRigidBody.velocity.y);
-
-            if (Input.GetAxis(playerJumpInputController_Name) > 0 && Grounded)
+            if (canMove)
             {
-                Grounded = false;
+                //playerRigidBody.velocity = new Vector2(Input.GetAxis(playerMoveInput_Name) * speed, playerRigidBody.velocity.y);
+                playerRigidBody.velocity = new Vector2(Input.GetAxis(playerMoveInputController_Name) * playerSpeed, playerRigidBody.velocity.y);
 
-                //playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInput_Name) * 5);
-                playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5);
+                if (Input.GetAxis(playerJumpInputController_Name) > 0 && Grounded)
+                {
+                    Grounded = false;
+
+                    //playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInput_Name) * 5);
+                    playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5);
+                }
             }
-
 
             yield return null;
         }
     }
 
-    private void Instance_OnToggleInput(bool canMove)
+    void OnCollisionEnter2D(Collision2D col)
     {
-        this.canMove = canMove;
+        if(col.gameObject.tag == "Sea")
+        {
+            isAlive = false;
+
+            GameManager.Instance.TriggerOnGameStateChange(GameEnums.GameState.GameOver);
+        }
+    }
+
+    private void Instance_OnGameStateChange(GameEnums.GameState gameState)
+    {
+        switch(gameState)
+        {
+            case GameEnums.GameState.Start:
+                canMove = false;
+                transform.position = initialPos;
+                break;
+            case GameEnums.GameState.Game:
+                canMove = true;
+                isAlive = true;
+                break;
+            case GameEnums.GameState.GameOver:
+                canMove = false;
+                break;
+            default:
+                break;
+        }
     }
 }
