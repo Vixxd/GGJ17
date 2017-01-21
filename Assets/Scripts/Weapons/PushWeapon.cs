@@ -16,7 +16,7 @@ public class PushWeapon : BaseWeapon
         seq.Play();
     }
 
-    protected override void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerEnter2D(Collider2D col)
     {
         if(col.gameObject.tag == "Player")
         {
