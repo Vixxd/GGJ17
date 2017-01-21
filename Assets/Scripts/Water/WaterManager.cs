@@ -176,7 +176,7 @@ public class WaterManager : MonoBehaviour
 
     private float sinWave (float x){
         float val = 0.0f;
-        val = Mathf.Sin(x/2 + (Time.time * 3));
+        val = Mathf.Sin(x/6 + (Time.time * 2))/2;
         return val;
    }
 }
