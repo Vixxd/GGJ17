@@ -53,9 +53,8 @@ public class PushWeapon : BaseWeapon
 
             col.gameObject.GetComponent<Rigidbody2D>().velocity = (-diffPosition.normalized);
 
-            Character_Controller character_Controller = col.gameObject.GetComponent<Character_Controller>();
 
-            Vector2 playerVelocity = character_Controller.playerRigidBody.velocity.normalized;
+            Vector2 playerVelocity = Character_Controller.playerRigidBody.velocity.normalized;
 
             if (col.transform.position.x > transform.position.x)
             {
@@ -66,7 +65,7 @@ public class PushWeapon : BaseWeapon
                 col.gameObject.GetComponent<Rigidbody2D>().velocity = (new Vector2(-1, 4) + playerVelocity);
             }
 
-            StartCoroutine(playerPushedDelay(character_Controller));
+            StartCoroutine(playerPushedDelay(Character_Controller));
         }
     }
 }

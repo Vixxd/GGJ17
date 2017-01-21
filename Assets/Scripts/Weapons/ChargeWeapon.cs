@@ -6,8 +6,6 @@ using DG.Tweening;
 
 public class ChargeWeapon : BaseWeapon
 {
-    public Character_Controller Character_Controller;
-
     public float PlayerSpeedModifier = 3f;
 
     void Start()

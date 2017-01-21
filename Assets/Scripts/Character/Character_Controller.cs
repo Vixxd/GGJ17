@@ -9,12 +9,15 @@ public class Character_Controller : MonoBehaviour
     public string playerFire1Input_Name, playerFire1InputController_Name;
     public string playerFire2Input_Name, playerFire2InputController_Name;
 
+    public Animator PlayerAnimator;
+
     public Rigidbody2D playerRigidBody;
     public GameObject Boat;
 
     public float playerSpeed = 10f;
     public bool Grounded = false;
     public bool Pushed = false;
+    public bool Walking = false;
 
     private bool canMove = false;
     private bool isAlive = true;
@@ -28,6 +31,7 @@ public class Character_Controller : MonoBehaviour
     void Start()
     {
         initialPos = transform.position;
+        PlayerAnimator = gameObject.GetComponent<Animator>();
 
         StartCoroutine(getPlayerInput());
 	}
@@ -60,6 +64,15 @@ public class Character_Controller : MonoBehaviour
                     {
                         Vector2 boatVelocity = boatAngle * playerSpeed * Input.GetAxis(playerMoveInputController_Name);
                         playerRigidBody.velocity = new Vector2(boatVelocity.x, playerRigidBody.velocity.y);
+
+                        if (Input.GetAxis(playerMoveInputController_Name) != 0)
+                        {
+                            Walking = true;
+                        }
+                        else
+                        {
+                            Walking = false;
+                        }
                     }
                     else
                     {
@@ -91,6 +104,10 @@ public class Character_Controller : MonoBehaviour
                     playerWeapon2.FireWeapon();
                 }
             }
+
+            PlayerAnimator.SetBool("Grounded", Grounded);
+            PlayerAnimator.SetBool("Pushed", Pushed);
+            PlayerAnimator.SetBool("Walking", Walking);
 
             yield return null;
         }

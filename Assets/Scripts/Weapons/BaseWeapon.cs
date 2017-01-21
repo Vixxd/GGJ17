@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BaseWeapon : MonoBehaviour
 {
+    public Character_Controller Character_Controller;
+
     public float FireTimePeriod;
     public float FireRechargeDelayTime;
 
@@ -16,6 +18,7 @@ public class BaseWeapon : MonoBehaviour
     {
         if (OnFire != null)
         {
+            Character_Controller.PlayerAnimator.SetTrigger("Attacking");
             OnFire();
         }
     }
