@@ -41,7 +41,6 @@ public class PushWeapon : BaseWeapon
     {
         character_Controller.Pushed = true;
         yield return new WaitForSeconds(pushedForTime);
-        Debug.Log("@@@@@@@@@@@@@@@@@@@@@@@");
         character_Controller.Pushed = false;
     }
 
