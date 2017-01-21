@@ -10,6 +10,8 @@ public class Character_Controller : MonoBehaviour
     public string playerFire2Input_Name, playerFire2InputController_Name;
 
     public Animator PlayerAnimator;
+    private AudioSource AudioSource;
+    public AudioClip Jump_Sound, Attack_Sound, Splash_Sound;
 
     public Rigidbody2D playerRigidBody;
     public GameObject Boat;
@@ -92,16 +94,20 @@ public class Character_Controller : MonoBehaviour
 
                     //playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInput_Name) * 5);
                     playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5);
+
+                    AudioSource.PlayOneShot(Jump_Sound);
                 }
 
                 if(Input.GetAxis(playerFire1InputController_Name) > 0)
                 {
                     playerWeapon1.FireWeapon();
+                    AudioSource.PlayOneShot(Attack_Sound);
                 }
 
                 if (Input.GetAxis(playerFire2InputController_Name) > 0)
                 {
                     playerWeapon2.FireWeapon();
+                    AudioSource.PlayOneShot(Attack_Sound);
                 }
             }
 
@@ -120,6 +126,10 @@ public class Character_Controller : MonoBehaviour
             isAlive = false;
 
             GameManager.Instance.TriggerOnGameStateChange(GameEnums.GameState.GameOver);
+        }
+        else if(col.gameObject.tag == "Water")
+        {
+            AudioSource.PlayOneShot(Splash_Sound);
         }
     }
 
