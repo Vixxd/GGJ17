@@ -39,6 +39,8 @@ public class WaterManager : MonoBehaviour
     [SerializeField]
     private PhysicsMaterial2D waterPMat;
 
+    public string WaterChildLayerName = "Water";
+
 
     private void Awake()
     {
@@ -128,6 +130,7 @@ public class WaterManager : MonoBehaviour
             currentMesh.Collider.name = "Collider";
             currentMesh.Collider.AddComponent<CapsuleCollider2D>();
             currentMesh.Collider.transform.parent = transform;
+            currentMesh.Collider.layer = LayerMask.NameToLayer(WaterChildLayerName);
             if (waterPMat) 
                 currentMesh.Collider.GetComponent<CapsuleCollider2D>().sharedMaterial = waterPMat;
 
