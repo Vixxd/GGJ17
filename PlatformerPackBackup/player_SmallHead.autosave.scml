@@ -2204,7 +2204,7 @@
             </timeline>
             <timeline id="5" name="p_arm_idle">
                 <key id="0" spin="0">
-                    <object folder="1" file="4" x="59.987477" y="1.526432" angle="4.735715" scale_x="5.004694"/>
+                    <object folder="1" file="0" x="59.987477" y="1.526432" angle="4.735715" scale_x="5.004694"/>
                 </key>
                 <key id="1" time="14" spin="0">
                     <object folder="1" file="4" x="59.987477" y="1.526432" angle="4.735715" scale_x="5.004694"/>
@@ -2213,7 +2213,7 @@
                     <object folder="1" file="4" x="59.987477" y="1.526432" angle="4.735715" scale_x="5.004694"/>
                 </key>
                 <key id="3" time="97" spin="0">
-                    <object folder="1" file="4" x="59.987477" y="1.526432" angle="4.735715" scale_x="5.004694"/>
+                    <object folder="1" file="5" x="59.987477" y="1.526432" angle="4.735715" scale_x="5.004694"/>
                 </key>
                 <key id="4" time="100" spin="0">
                     <object folder="1" file="4" x="59.987477" y="1.526432" angle="4.735715" scale_x="5.004694"/>
@@ -2225,7 +2225,7 @@
                     <object folder="1" file="5" x="59.987477" y="1.526432" angle="4.735715" scale_x="5.004694"/>
                 </key>
                 <key id="7" time="293" spin="0">
-                    <object folder="1" file="4" x="59.987477" y="1.526432" angle="4.735715" scale_x="5.004694"/>
+                    <object folder="1" file="5" x="59.987477" y="1.526432" angle="4.735715" scale_x="5.004694"/>
                 </key>
                 <key id="8" time="302" spin="0">
                     <object folder="1" file="4" x="59.987477" y="1.526432" angle="4.735715" scale_x="5.004694"/>
@@ -4534,7 +4534,7 @@
                     <object folder="6" file="0" x="21.393567" y="12.878978" angle="184.026846" scale_x="1.501046"/>
                 </key>
                 <key id="8" time="1000" spin="0">
-                    <object folder="6" file="0" x="21.393567" y="12.878978" angle="184.026846" scale_x="1.501046"/>
+                    <object folder="6" file="0" x="0.723511" y="-10.081149" angle="184.026846" scale_x="1.501046"/>
                 </key>
             </timeline>
             <timeline id="2" name="p_arm_idle_a">
@@ -5582,7 +5582,7 @@
                     <object folder="6" file="0" x="21.393567" y="12.878978" angle="184.026846" scale_x="1.501046"/>
                 </key>
                 <key id="9" time="1000" spin="0">
-                    <object folder="6" file="0" x="21.393567" y="12.878978" angle="184.026846" scale_x="1.501046"/>
+                    <object folder="6" file="0" x="0.723511" y="-10.081149" angle="184.026846" scale_x="1.501046"/>
                 </key>
             </timeline>
             <timeline id="2" name="p_arm_idle_a">
@@ -7467,7 +7467,7 @@
                     <object folder="6" file="0" x="21.393567" y="12.878978" angle="184.026846" scale_x="1.501046"/>
                 </key>
                 <key id="2" time="300" spin="0">
-                    <object folder="6" file="0" x="21.393567" y="12.878978" angle="184.026846" scale_x="1.501046"/>
+                    <object folder="6" file="0" x="0.723511" y="-10.081149" angle="184.026846" scale_x="1.501046"/>
                 </key>
             </timeline>
             <timeline id="2" name="p_arm_idle_a">
@@ -8057,7 +8057,7 @@
                     <object folder="6" file="0" x="21.393567" y="12.878978" angle="184.026846" scale_x="1.501046"/>
                 </key>
                 <key id="2" time="1000" spin="0">
-                    <object folder="6" file="0" x="21.393567" y="12.878978" angle="184.026846" scale_x="1.501046"/>
+                    <object folder="6" file="0" x="0.723511" y="-10.081149" angle="184.026846" scale_x="1.501046"/>
                 </key>
             </timeline>
             <timeline id="2" name="p_arm_idle_a">
@@ -8595,7 +8595,7 @@
                     <object folder="6" file="0" x="21.393567" y="12.878978" angle="184.026846" scale_x="1.501046"/>
                 </key>
                 <key id="2" time="312" spin="0">
-                    <object folder="6" file="0" x="21.393567" y="12.878978" angle="184.026846" scale_x="1.501046"/>
+                    <object folder="6" file="0" x="0.723511" y="-10.081149" angle="184.026846" scale_x="1.501046"/>
                 </key>
             </timeline>
             <timeline id="2" name="p_arm_idle_a">
