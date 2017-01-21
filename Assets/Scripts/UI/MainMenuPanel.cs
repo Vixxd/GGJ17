@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainMenu : MonoBehaviour
+public class MainMenuPanel : MonoBehaviour
 {
     public GameObject Panel_Start;
 
@@ -18,6 +18,7 @@ public class MainMenu : MonoBehaviour
         {
             if (Input.anyKey)
             {
+                Debug.Log("ADASDASD");
                 Panel_Start.SetActive(false);
 
                 GameManager.Instance.TriggerOnGameStateChange(GameEnums.GameState.Game);

@@ -9,11 +9,14 @@ public class GameManager : Singleton<GameManager>
     public GameEnums.GameState CurrentGameState { get; set; }
     public List<GameObject> playerGameObject_List;
 
-    private bool started = false;
-
 	void Start()
     {
         TriggerOnGameStateChange(GameEnums.GameState.Start);
+    }
+
+    void Update()
+    {
+        Debug.Log(CurrentGameState);
     }
 
     // Event Handler
