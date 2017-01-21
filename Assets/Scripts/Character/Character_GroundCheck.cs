@@ -6,7 +6,7 @@ public class Character_GroundCheck : MonoBehaviour
 {
     public Character_Controller character_Controller;
 
-    void OnCollisionEnter2D(Collision2D col)
+    void OnTriggerEnter2D(Collider2D col)
     {
         if(col.gameObject.tag == "Ground")
         {

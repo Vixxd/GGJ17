@@ -9,6 +9,7 @@ public class Character_Controller : MonoBehaviour
     public string playerFireInput_Name, playerFireInputController_Name;
 
     public Rigidbody2D playerRigidBody;
+    public GameObject Boat;
 
     public float playerSpeed = 10f;
     public bool Grounded = false;
@@ -44,14 +45,25 @@ public class Character_Controller : MonoBehaviour
             if (canMove)
             {
                 //playerRigidBody.velocity = new Vector2(Input.GetAxis(playerMoveInput_Name) * speed, playerRigidBody.velocity.y);
-                playerRigidBody.AddForce(new Vector2(Input.GetAxis(playerMoveInputController_Name) * playerSpeed, playerRigidBody.velocity.y));
+                Vector3 boatAngle = Boat.transform.right;
+
+                Debug.Log(boatAngle);
+                if(Grounded)
+                {
+                    Vector2 boatVelocity = boatAngle * playerSpeed * Input.GetAxis(playerMoveInputController_Name);
+                    playerRigidBody.velocity = new Vector2(boatVelocity.x, playerRigidBody.velocity.y);
+                }
+                else
+                {
+                    playerRigidBody.velocity = new Vector2(Input.GetAxis(playerMoveInputController_Name) * playerSpeed, playerRigidBody.velocity.y);
+                }
 
                 if (Input.GetAxis(playerJumpInputController_Name) > 0 && Grounded)
                 {
                     Grounded = false;
 
                     //playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInput_Name) * 5);
-                    playerRigidBody.AddForce(new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5));
+                    playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5);
                 }
 
                 if(Input.GetAxis(playerFireInputController_Name) > 0)
