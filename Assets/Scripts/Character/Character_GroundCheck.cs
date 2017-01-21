@@ -13,4 +13,12 @@ public class Character_GroundCheck : MonoBehaviour
             character_Controller.Grounded = true;
         }
     }
+
+    void OnTriggerExit2D(Collider2D col)
+    {
+        if(col.gameObject.tag == "Ground")
+        {
+            character_Controller.Grounded = false;
+        }
+    }
 }

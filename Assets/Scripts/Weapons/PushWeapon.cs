@@ -6,7 +6,7 @@ using DG.Tweening;
 
 public class PushWeapon : BaseWeapon
 {
-    public float pushedForTime = 0.5f;
+    public float pushedForTime = 1f;
 
     void Start()
     {
@@ -30,7 +30,7 @@ public class PushWeapon : BaseWeapon
 
         Sequence seq = DOTween.Sequence();
         seq.Append(transform.DOScale(new Vector3(4, 4, 4), FireTimePeriod));
-        seq.Append(transform.DOScale(new Vector3(1, 1, 1), FireRechargeDelayTime));
+        seq.Append(transform.DOScale(new Vector3(1, 1, 1), FireTimePeriod/10));
         seq.Play();
 
         yield return new WaitForSeconds(FireTimePeriod + FireRechargeDelayTime);
@@ -51,8 +51,22 @@ public class PushWeapon : BaseWeapon
             Vector3 otherPosition = col.transform.position;
             Vector3 diffPosition = transform.position - otherPosition;
 
-            col.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector3.up * 300);
-            StartCoroutine(playerPushedDelay(col.gameObject.GetComponent<Character_Controller>()));
+            col.gameObject.GetComponent<Rigidbody2D>().velocity = (-diffPosition.normalized);
+
+            Character_Controller character_Controller = col.gameObject.GetComponent<Character_Controller>();
+
+            Vector2 playerVelocity = character_Controller.playerRigidBody.velocity.normalized;
+
+            if (col.transform.position.x > transform.position.x)
+            {
+                col.gameObject.GetComponent<Rigidbody2D>().velocity = (new Vector2(1, 4) + playerVelocity);
+            }
+            else
+            {
+                col.gameObject.GetComponent<Rigidbody2D>().velocity = (new Vector2(-1, 4) + playerVelocity);
+            }
+
+            StartCoroutine(playerPushedDelay(character_Controller));
         }
     }
 }

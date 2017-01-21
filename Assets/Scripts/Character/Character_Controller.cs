@@ -54,20 +54,23 @@ public class Character_Controller : MonoBehaviour
                 Vector3 boatAngle = Boat.transform.right;
 
                 //Debug.Log(boatAngle);
-                if(Grounded)
+                if(!Pushed)
                 {
-                    Vector2 boatVelocity = boatAngle * playerSpeed * Input.GetAxis(playerMoveInputController_Name);
-                    playerRigidBody.velocity = new Vector2(boatVelocity.x, playerRigidBody.velocity.y);
-                }
-                else
-                {
-                    playerRigidBody.velocity = new Vector2(Input.GetAxis(playerMoveInputController_Name) * playerSpeed, playerRigidBody.velocity.y);
+                    if (Grounded)
+                    {
+                        Vector2 boatVelocity = boatAngle * playerSpeed * Input.GetAxis(playerMoveInputController_Name);
+                        playerRigidBody.velocity = new Vector2(boatVelocity.x, playerRigidBody.velocity.y);
+                    }
+                    else
+                    {
+                        playerRigidBody.velocity = new Vector2(Input.GetAxis(playerMoveInputController_Name) * playerSpeed, playerRigidBody.velocity.y);
+                    }
                 }
 
-                if(Pushed)
-                {
-                    playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, playerRigidBody.velocity.y);
-                }
+                //if(Pushed)
+                //{
+                //    playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, playerRigidBody.velocity.y);
+                //}
 
                 if (Input.GetAxis(playerJumpInputController_Name) > 0 && Grounded)
                 {
