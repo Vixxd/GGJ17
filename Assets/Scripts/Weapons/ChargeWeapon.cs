@@ -9,21 +9,23 @@ public class ChargeWeapon : BaseWeapon
     public Character_Controller Character_Controller;
 
     public float PlayerSpeedModifier = 3f;
-    public float FireTimePeriod = 2f;
-    public float FireRechargeDelayTime = 3f;
 
-    private bool canFire = true;
+    void Start()
+    {
+        FireTimePeriod = 2f;
+        FireRechargeDelayTime = 3f;
+    }
 
     public override void FireWeapon()
     {
         if(canFire)
         {
             TriggerOnFire();
-            StartCoroutine(changePlayerSpeed());
+            StartCoroutine(fireWeapon());
         }
     }
 
-    private IEnumerator changePlayerSpeed()
+    private IEnumerator fireWeapon()
     {
         canFire = false;
         float originalSpeed = Character_Controller.playerSpeed;

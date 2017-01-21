@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class BaseWeapon : MonoBehaviour
 {
+    public float FireTimePeriod;
+    public float FireRechargeDelayTime;
+
+    protected bool canFire = true;
+
     public delegate void OnFireEvent();
     public event OnFireEvent OnFire;
 

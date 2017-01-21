@@ -6,15 +6,32 @@ using DG.Tweening;
 
 public class PushWeapon : BaseWeapon
 {
-	public override void FireWeapon()
+    void Start()
     {
-        TriggerOnFire();
+        FireTimePeriod = 0.1f;
+        FireRechargeDelayTime = 2f;
+    }
+
+    public override void FireWeapon()
+    {
+        if(canFire)
+        {
+            TriggerOnFire();
+            StartCoroutine(fireWeapon());
+        }
+    }
+
+    private IEnumerator fireWeapon()
+    {
+        canFire = false;
+
         Sequence seq = DOTween.Sequence();
-
-        seq.Append(transform.DOScale(new Vector3(4, 4, 4), 0.1f));
-        seq.Append(transform.DOScale(new Vector3(1, 1, 1), 0.01f));
-
+        seq.Append(transform.DOScale(new Vector3(4, 4, 4), FireTimePeriod));
+        seq.Append(transform.DOScale(new Vector3(1, 1, 1), FireRechargeDelayTime));
         seq.Play();
+
+        yield return new WaitForSeconds(FireRechargeDelayTime);
+        canFire = true;
     }
 
     void OnTriggerEnter2D(Collider2D col)
