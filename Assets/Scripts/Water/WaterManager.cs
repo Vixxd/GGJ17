@@ -1,12 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class WaterManager : MonoBehaviour
 {
 
+    public struct waveTarget
+    {
+        public float amplitudeReduction;
+        public float speed;
+        public float HeightMultiplyer;
+
+        public waveTarget(float amplitudeReduction, float speed, float HeightMultiplyer)
+        {
+            this.amplitudeReduction = amplitudeReduction;
+            this.speed = speed;
+            this.HeightMultiplyer = HeightMultiplyer;
+        }
+    }
 
 
+    waveTarget clamSeas = new waveTarget(15, 1, 0.5f);
+    waveTarget smallwaves = new waveTarget( 8, 1.5f, 0.6f);
+    waveTarget choppyWater = new waveTarget(  5, 2, 0.7f);
+    waveTarget mediumWaves = new waveTarget(4, 2.5f, 1f);
+    waveTarget largeWaves = new waveTarget(3f, 3.5f, 1.2f);
+    waveTarget currentWaves = new waveTarget(0,0,0);
+
+    private waveTarget targetWaveTarget;
+
+    public int waveType = 0;
+    public float lerpSpeed = 2.0f;
+
+    private int _CurrentWaveType =0;
+    private int _NewWaveType = 0;
+    private float _NewWaveTypeSwapPos = 0;
+    private bool _SwapingWaveType;
+    private float _elementwidth;
     //constants
     const float _springconstant = 0.02f;
     const float _damping = 0.04f;
@@ -18,6 +49,7 @@ public class WaterManager : MonoBehaviour
     float _left;
     float _bottom;
     float _right;
+    private float _width;
 
     private List<WaterElement> _waterElements;
     private List<WaterMesh> _waterMeshes;
@@ -41,6 +73,10 @@ public class WaterManager : MonoBehaviour
 
     public string WaterChildLayerName = "Water";
 
+    void OnEnable()
+    {
+        GameManager.Instance.OnGameStateChange += Instance_OnGameStateChange; ;
+    }
 
     private void Awake()
     {
@@ -53,7 +89,10 @@ public class WaterManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        targetWaveTarget = clamSeas;
+        currentWaves = clamSeas;
         SpawnWater(-10, 20, 0, -10);
+        
     }
 
     // Update is called once per frame
@@ -68,15 +107,10 @@ public class WaterManager : MonoBehaviour
         UpdateMeshes();
     }
 
-    private int DetermineNumberOfWaterElements()
-    {
-        float numOfEl = (float)Screen.width / (float)waterResolution;
-        return Mathf.RoundToInt(numOfEl);
-    }
-
 
     public void SpawnWater(float Left, float Width, float Top, float bottom)
     {
+        _width = Width;
         _bottom = bottom;
         int edgecount = Mathf.RoundToInt(Width) * waterResolution;
         int nodecount = edgecount + 1;
@@ -86,6 +120,8 @@ public class WaterManager : MonoBehaviour
         _lineRenederer.material.renderQueue = 1000;
         _lineRenederer.SetVertexCount(nodecount);
         _lineRenederer.SetWidth(LineWidth, LineWidth);
+
+        _elementwidth = Width / edgecount;
 
         for (int i = 0; i < nodecount; i++)
         {
@@ -135,13 +171,9 @@ public class WaterManager : MonoBehaviour
                 currentMesh.Collider.GetComponent<CapsuleCollider2D>().sharedMaterial = waterPMat;
 
             //Set the position and scale to the correct dimensions
+            //tesd
             currentMesh.Collider.transform.position = new Vector3(Left + Width * (i + 0.5f) / edgecount, Top - 0.5f, 0);
             currentMesh.Collider.transform.localScale = new Vector3(Width / edgecount, 1, 1);
-
-            //Add a WaterDetector and make sure they're triggers
-            // currentMesh.Collider.GetComponent<BoxCollider2D>().isTrigger = true;
-           // currentMesh.Collider.GetComponent<BoxCollider2D>()//. = true;
-            //currentMesh.Collider.AddComponent<WaterDetector>();
 
             _waterMeshes.Add(currentMesh);
 
@@ -163,27 +195,225 @@ public class WaterManager : MonoBehaviour
             _waterMeshes[i].Collider.transform.position = new Vector3(_waterMeshes[i].Collider.transform.position.x, _waterElements[i].Y-0.5f);
 
         }
-
-
     }
 
     private void waveUpdate()
     {
         //foreach (WaterElement currenetElement in _waterElements)
-        for(int i = 0;i<_waterElements.Count;i++)
+        for (int i = 0; i < _waterElements.Count; i++)
         {
-            _waterElements[i].Y = sinWave(_waterElements[i].X);
+            _waterElements[i].Y = LerpingWave(_waterElements[i].X);
             _lineRenederer.SetPosition(i, new Vector3(_waterElements[i].X, _waterElements[i].Y, z));
         }
+        if (_SwapingWaveType)
+        {
+            _NewWaveTypeSwapPos -= _elementwidth;
+            if (_NewWaveTypeSwapPos<0-(_width/2))
+            {
+                _SwapingWaveType = false;
+                _CurrentWaveType = _NewWaveType;
+
+            }
+        }
+
+
     }
 
-    private float sinWave (float x)
-    {
-        float amplitudeReduction = 4;
-        float speed = 3;
 
+
+    private void LerpToWave(int newWaveType)
+    {
+        switch (newWaveType)
+        {
+            case 0:
+                targetWaveTarget = clamSeas;
+                break;
+            case 1:
+                targetWaveTarget  = smallwaves;
+                break;
+            case 2:
+                targetWaveTarget = choppyWater;
+                break;
+            case 3:
+                targetWaveTarget = mediumWaves;
+                break;
+            case 4:
+                targetWaveTarget  = largeWaves;
+                break;
+            default:
+                targetWaveTarget = clamSeas;
+                break;
+        }
+
+        StartCoroutine(LerpToNewWaveTarget());
+
+    }
+
+    private IEnumerator LerpToNewWaveTarget()
+    {
+        float timetotal = lerpSpeed;
+        float timeremaining = timetotal;
+        waveTarget origWaves = new waveTarget(currentWaves.amplitudeReduction, currentWaves.speed,
+            currentWaves.HeightMultiplyer);
+
+        while (timeremaining > 0)
+        {
+            timeremaining -= Time.deltaTime;
+           
+            float t = (timeremaining / timetotal);
+            // Debug.Log("T: " + t + ", Time remaining :" + timeremaining);
+            currentWaves.speed = Mathf.Lerp(targetWaveTarget.speed, origWaves.speed, t);
+
+            currentWaves.amplitudeReduction = Mathf.Lerp(targetWaveTarget.amplitudeReduction, origWaves.amplitudeReduction, t);
+
+            currentWaves.HeightMultiplyer = Mathf.Lerp(targetWaveTarget.HeightMultiplyer, origWaves.HeightMultiplyer,t);
+
+           // Debug.Log("Currentspeed: " + currentWaves.speed + " orig speed: " + origWaves.speed + " target speed: " +
+                   //     targetWaveTarget.speed);
+
+           //Debug.Log("amp reduction : " + currentWaves.amplitudeReduction + " orig amp reduction: " + origWaves.amplitudeReduction + " target amp reduction: " +
+                //        targetWaveTarget.amplitudeReduction);
+            //Debug.Log("current HeightMultiplyer : " + currentWaves.HeightMultiplyer + " orig HeightMultiplyer: " + origWaves.HeightMultiplyer + " target HeightMultiplyer: " +
+                 //       targetWaveTarget.HeightMultiplyer);
+            yield return null;
+           
+        }
+        //currentWaves = targetWaveTarget;
+    }
+
+
+
+    private float LerpingWave(float x)
+    {
         float val = 0.0f;
-        val =   Mathf.Sin(x/ amplitudeReduction + (Time.time * speed));
+        val = Mathf.Sin(x / currentWaves.amplitudeReduction + (Time.time * currentWaves.speed)) * currentWaves.HeightMultiplyer;
         return val;
-   }
+    }
+
+    private float SinBasedWave(float x, float amplitudeReduction, float speed, float HeightMultiplyer)
+    {
+        float val = 0.0f;
+        val = Mathf.Sin(x / amplitudeReduction + (Time.time * speed)) * HeightMultiplyer;
+        return val;
+    }
+
+    private void Instance_OnGameStateChange(GameEnums.GameState gameState)
+    {
+        if (gameState == GameEnums.GameState.Game)
+        {
+            lerpSpeed = 150.0f;
+            LerpToWave(waveType);
+            
+        }else if (gameState == GameEnums.GameState.GameOver)
+        {
+            lerpSpeed = 20.0f;
+            LerpToWave(0);
+        }
+    }
 }
+
+
+/*  private float SelectWave(float x, int _waveType)
+  {
+      float val = 0;
+      switch (_waveType)
+      {
+          case 0:
+              val = CalmWater(x);
+              break;
+          case 1:
+              val = Smallwaves(x);
+              break;
+          case 2:
+              val = ChoppyWater(x);
+              break;
+          case 3:
+              val = MediumWaves(x);
+              break;
+          case 4:
+              val = LargeWaves(x);
+              break;
+          default:
+              val = 0.0f;
+              break;
+      }
+
+
+      return val;
+  }
+
+  private float GenerateWave(float x)
+  {
+      float val = 0;
+      if (_SwapingWaveType)
+      {
+
+          if (x < _NewWaveTypeSwapPos)
+          {
+              val = SelectWave(x, _CurrentWaveType);
+          }
+          else
+          {
+              // Debug.Log("X: " + x + " _NewWaveTypeSwapPos: " + _NewWaveTypeSwapPos  );
+              val = SelectWave(x, _NewWaveType);
+          }
+      }
+      else
+      {
+          val = SelectWave(x, _CurrentWaveType);
+      }
+
+      return val;
+  }*/
+
+
+/*private void ChangeWave(int newWaveType)
+{
+
+    _NewWaveType = newWaveType;
+    _NewWaveTypeSwapPos = _waterElements[_waterElements.Count-1].X;
+    StartCoroutine(StartWaveChange());
+}
+
+private IEnumerator StartWaveChange()
+{
+    while ( WaveAtZero(_NewWaveTypeSwapPos))
+    {
+        Debug.Log(GenerateWave(_NewWaveTypeSwapPos));
+        yield return null;
+    }
+    Debug.Log("Ready to swap");
+    _SwapingWaveType = true;
+}
+
+private bool WaveAtZero(float pos)
+{
+   return  GenerateWave(pos) > 0.02 || GenerateWave(pos) < -0.02f;
+}
+
+
+private float CalmWater(float x)
+{
+    return SinBasedWave(x, 100, 1, 0.5f);
+}
+
+private float Smallwaves(float x)
+{
+    return SinBasedWave(x, 8, 1.5f, 0.6f);
+}
+
+private float ChoppyWater(float x)
+{
+    return SinBasedWave(x, 5, 2, 0.7f);
+}
+
+
+private float MediumWaves(float x)
+{
+    return SinBasedWave(x, 4, 2.5f, 1f);
+}
+
+private float LargeWaves(float x)
+{
+    return SinBasedWave(x, 3f, 3.5f, 1.2f);
+}*/
