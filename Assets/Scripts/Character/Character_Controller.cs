@@ -103,7 +103,7 @@ public class Character_Controller : MonoBehaviour
             case GameEnums.GameState.Start:
                 canMove = false;
                 transform.position = initialPos;
-
+                playerRigidBody.velocity = Vector2.zero;
                 playerRigidBody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
                 break;
             case GameEnums.GameState.Game:
@@ -123,6 +123,7 @@ public class Character_Controller : MonoBehaviour
     private void Instance_OnResetCharacter()
     {
         transform.position = initialPos;
+        playerRigidBody.velocity = Vector2.zero;
     }
 
 

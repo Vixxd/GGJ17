@@ -34,7 +34,6 @@ public class DeathManager : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("765875785t78t568765t678565t78");
         if (other.tag == "Player")
         {
             if (other.GetComponent<Character_Controller>().playerNumber == 1)
@@ -69,7 +68,7 @@ public class DeathManager : MonoBehaviour
     {
         if (gameState == GameEnums.GameState.Game)
         {
-            p1Lives = Lives;
+            p1Lives = Lives*2;
             p2Lives = Lives;
         }
     }
