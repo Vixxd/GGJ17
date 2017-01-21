@@ -6,6 +6,8 @@ using DG.Tweening;
 
 public class PushWeapon : BaseWeapon
 {
+    public float pushedForTime = 0.5f;
+
     void Start()
     {
         FireTimePeriod = 0.1f;
@@ -16,6 +18,7 @@ public class PushWeapon : BaseWeapon
     {
         if(canFire)
         {
+            Debug.Log("FIRE");
             TriggerOnFire();
             StartCoroutine(fireWeapon());
         }
@@ -30,8 +33,15 @@ public class PushWeapon : BaseWeapon
         seq.Append(transform.DOScale(new Vector3(1, 1, 1), FireRechargeDelayTime));
         seq.Play();
 
-        yield return new WaitForSeconds(FireRechargeDelayTime);
+        yield return new WaitForSeconds(FireTimePeriod + FireRechargeDelayTime);
         canFire = true;
+    }
+
+    private IEnumerator playerPushedDelay(Character_Controller character_Controller)
+    {
+        character_Controller.Pushed = true;
+        yield return new WaitForSeconds(pushedForTime);
+        character_Controller.Pushed = false;
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -41,7 +51,8 @@ public class PushWeapon : BaseWeapon
             Vector3 otherPosition = col.transform.position;
             Vector3 diffPosition = transform.position - otherPosition;
 
-            col.gameObject.GetComponent<Rigidbody2D>().AddForce(-diffPosition * 300);
+            col.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector3.up * 300);
+            StartCoroutine(playerPushedDelay(col.gameObject.GetComponent<Character_Controller>()));
         }
     }
 }

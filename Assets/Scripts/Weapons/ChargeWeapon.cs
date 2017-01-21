@@ -33,6 +33,7 @@ public class ChargeWeapon : BaseWeapon
         Character_Controller.playerSpeed = originalSpeed * PlayerSpeedModifier;
         yield return new WaitForSeconds(FireTimePeriod);
         Character_Controller.playerSpeed = originalSpeed;
+        yield return new WaitForSeconds(FireRechargeDelayTime);
         canFire = true;
     }
 }

@@ -29,15 +29,11 @@ public class Player_ChargeSlider : MonoBehaviour
 
     private IEnumerator decayChargeWeaponSlider()
     {
-        float sliderDecayTime = Time.time + playerChargeWeapon.FireTimePeriod;
-
         while (chargeSlider.value > 0)
         {
             chargeSlider.value -= (1 / playerChargeWeapon.FireTimePeriod) * Time.deltaTime;
             yield return null;
         }
-
-        float sliderRechargeTime = Time.time + playerChargeWeapon.FireRechargeDelayTime;
 
         while (chargeSlider.value < 1)
         {

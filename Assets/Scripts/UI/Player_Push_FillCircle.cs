@@ -29,15 +29,11 @@ public class Player_Push_FillCircle : MonoBehaviour
 
     private IEnumerator decayPushWeaponFillCircle()
     {
-        float sliderDecayTime = Time.time + playerPushWeapon.FireTimePeriod;
-
         while (pushFillCircle.fillAmount > 0)
         {
             pushFillCircle.fillAmount -= (1 / playerPushWeapon.FireTimePeriod) * Time.deltaTime;
             yield return null;
         }
-
-        float sliderRechargeTime = Time.time + playerPushWeapon.FireRechargeDelayTime;
 
         while (pushFillCircle.fillAmount < 1)
         {

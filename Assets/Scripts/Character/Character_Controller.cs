@@ -14,6 +14,7 @@ public class Character_Controller : MonoBehaviour
 
     public float playerSpeed = 10f;
     public bool Grounded = false;
+    public bool Pushed = false;
 
     private bool canMove = false;
     private bool isAlive = true;
@@ -63,9 +64,15 @@ public class Character_Controller : MonoBehaviour
                     playerRigidBody.velocity = new Vector2(Input.GetAxis(playerMoveInputController_Name) * playerSpeed, playerRigidBody.velocity.y);
                 }
 
+                if(Pushed)
+                {
+                    playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, playerRigidBody.velocity.y);
+                }
+
                 if (Input.GetAxis(playerJumpInputController_Name) > 0 && Grounded)
                 {
                     Grounded = false;
+                    Pushed = false;
 
                     //playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInput_Name) * 5);
                     playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5);
