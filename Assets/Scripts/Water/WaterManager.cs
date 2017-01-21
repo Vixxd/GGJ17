@@ -8,9 +8,9 @@ public class WaterManager : MonoBehaviour
 
 
     //constants
-    const float springconstant = 0.02f;
-    const float damping = 0.04f;
-    const float spread = 0.05f;
+    const float _springconstant = 0.02f;
+    const float _damping = 0.04f;
+    const float _spread = 0.05f;
     const float z = -1f;
 
     //water dimentions 
@@ -35,6 +35,10 @@ public class WaterManager : MonoBehaviour
     [Tooltip("the kind of mesh we're going to use for the main body of water:")]
     [SerializeField]
     private GameObject watermesh;
+    [Tooltip("the physics material of the water, optional")]
+    [SerializeField]
+    private PhysicsMaterial2D waterPMat;
+
 
     private void Awake()
     {
@@ -118,6 +122,24 @@ public class WaterManager : MonoBehaviour
             currentMesh.MeshObject.GetComponent<MeshFilter>().mesh = currentMesh.Mesh;
             currentMesh.MeshObject.transform.parent = transform;
 
+
+            //Create our colliders, set them be our child
+            currentMesh.Collider = new GameObject();
+            currentMesh.Collider.name = "Collider";
+            currentMesh.Collider.AddComponent<CapsuleCollider2D>();
+            currentMesh.Collider.transform.parent = transform;
+            if (waterPMat) 
+                currentMesh.Collider.GetComponent<CapsuleCollider2D>().sharedMaterial = waterPMat;
+
+            //Set the position and scale to the correct dimensions
+            currentMesh.Collider.transform.position = new Vector3(Left + Width * (i + 0.5f) / edgecount, Top - 0.5f, 0);
+            currentMesh.Collider.transform.localScale = new Vector3(Width / edgecount, 1, 1);
+
+            //Add a WaterDetector and make sure they're triggers
+            // currentMesh.Collider.GetComponent<BoxCollider2D>().isTrigger = true;
+           // currentMesh.Collider.GetComponent<BoxCollider2D>()//. = true;
+            //currentMesh.Collider.AddComponent<WaterDetector>();
+
             _waterMeshes.Add(currentMesh);
 
         }
@@ -135,20 +157,26 @@ public class WaterManager : MonoBehaviour
             Vertices[3] = new Vector3(_waterElements[i + 1].X, _bottom, z);
 
             _waterMeshes[i].Mesh.vertices = Vertices;
+            _waterMeshes[i].Collider.transform.position = new Vector3(_waterMeshes[i].Collider.transform.position.x, _waterElements[i].Y-0.5f);
+
         }
+
+
     }
 
     private void waveUpdate()
     {
-        foreach (WaterElement currenetElement in _waterElements)
+        //foreach (WaterElement currenetElement in _waterElements)
+        for(int i = 0;i<_waterElements.Count;i++)
         {
-            currenetElement.Y = sinWave(currenetElement.X);
+            _waterElements[i].Y = sinWave(_waterElements[i].X);
+            _lineRenederer.SetPosition(i, new Vector3(_waterElements[i].X, _waterElements[i].Y, z));
         }
     }
 
     private float sinWave (float x){
         float val = 0.0f;
-        val = Mathf.Sin(4* Mathf.Sin(x + Time.time));
+        val = Mathf.Sin(x/2 + (Time.time * 3));
         return val;
    }
 }

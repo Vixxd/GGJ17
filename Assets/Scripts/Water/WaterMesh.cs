@@ -6,7 +6,9 @@ public class WaterMesh  {
 
     public GameObject MeshObject;
     public Mesh Mesh;
-     
+    public GameObject Collider;
+
+
 
     public WaterMesh(){
         Mesh = new Mesh();
