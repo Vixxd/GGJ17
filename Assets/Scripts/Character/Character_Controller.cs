@@ -73,12 +73,12 @@ public class Character_Controller : MonoBehaviour
 
                 if(Input.GetAxis(playerFire1InputController_Name) > 0)
                 {
-                    playerWeapon1.OnFire();
+                    playerWeapon1.FireWeapon();
                 }
 
                 if (Input.GetAxis(playerFire2InputController_Name) > 0)
                 {
-                    playerWeapon2.OnFire();
+                    playerWeapon2.FireWeapon();
                 }
             }
 

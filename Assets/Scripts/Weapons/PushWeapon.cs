@@ -6,8 +6,9 @@ using DG.Tweening;
 
 public class PushWeapon : BaseWeapon
 {
-	public override void OnFire()
+	public override void FireWeapon()
     {
+        TriggerOnFire();
         Sequence seq = DOTween.Sequence();
 
         seq.Append(transform.DOScale(new Vector3(4, 4, 4), 0.1f));
@@ -20,7 +21,6 @@ public class PushWeapon : BaseWeapon
     {
         if(col.gameObject.tag == "Player")
         {
-            Debug.Log("~@~@~@@~~@@~~@@~");
             Vector3 otherPosition = col.transform.position;
             Vector3 diffPosition = transform.position - otherPosition;
 

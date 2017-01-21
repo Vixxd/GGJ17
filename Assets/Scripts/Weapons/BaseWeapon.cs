@@ -2,7 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseWeapon : MonoBehaviour
+public class BaseWeapon : MonoBehaviour
 {
-    public abstract void OnFire();
+    public delegate void OnFireEvent();
+    public event OnFireEvent OnFire;
+
+    public void TriggerOnFire()
+    {
+        if (OnFire != null)
+        {
+            OnFire();
+        }
+    }
+
+    public virtual void FireWeapon() { }
 }
