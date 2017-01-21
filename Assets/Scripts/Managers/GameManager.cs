@@ -14,11 +14,6 @@ public class GameManager : Singleton<GameManager>
         TriggerOnGameStateChange(GameEnums.GameState.Start);
     }
 
-    void Update()
-    {
-        Debug.Log(CurrentGameState);
-    }
-
     // Event Handler
     public delegate void OnGameStateChangeEvent(GameEnums.GameState gameState);
     public event OnGameStateChangeEvent OnGameStateChange;

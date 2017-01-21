@@ -6,16 +6,19 @@ public class Character_Controller : MonoBehaviour
 {
     public string playerMoveInput_Name, playerJumpInput_Name;
     public string playerMoveInputController_Name, playerJumpInputController_Name;
+    public string playerFireInput_Name, playerFireInputController_Name;
 
     public Rigidbody2D playerRigidBody;
 
-    public float playerSpeed = 5.0f;
+    public float playerSpeed = 10f;
     public bool Grounded = false;
 
     private bool canMove = false;
     private bool isAlive = true;
 
     private Vector2 initialPos;
+
+    public BaseWeapon playerWeapon;
 
     void Start()
     {
@@ -41,14 +44,19 @@ public class Character_Controller : MonoBehaviour
             if (canMove)
             {
                 //playerRigidBody.velocity = new Vector2(Input.GetAxis(playerMoveInput_Name) * speed, playerRigidBody.velocity.y);
-                playerRigidBody.velocity = new Vector2(Input.GetAxis(playerMoveInputController_Name) * playerSpeed, playerRigidBody.velocity.y);
+                playerRigidBody.AddForce(new Vector2(Input.GetAxis(playerMoveInputController_Name) * playerSpeed, playerRigidBody.velocity.y));
 
                 if (Input.GetAxis(playerJumpInputController_Name) > 0 && Grounded)
                 {
                     Grounded = false;
 
                     //playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInput_Name) * 5);
-                    playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5);
+                    playerRigidBody.AddForce(new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5));
+                }
+
+                if(Input.GetAxis(playerFireInputController_Name) > 0)
+                {
+                    playerWeapon.OnFire();
                 }
             }
 
