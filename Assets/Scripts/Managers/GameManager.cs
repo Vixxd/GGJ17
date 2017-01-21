@@ -26,4 +26,16 @@ public class GameManager : Singleton<GameManager>
             OnGameStateChange(gameState);
         }
     }
+
+    public delegate void OnResetCharacterEvent();
+    public event OnResetCharacterEvent OnResetCharacter;
+
+    public void TriggerOnResetCharacter()
+    {
+        if (OnResetCharacter != null)
+        {
+
+            OnResetCharacter();
+        }
+    }
 }

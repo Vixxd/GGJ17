@@ -21,6 +21,8 @@ public class Character_Controller : MonoBehaviour
 
     public BaseWeapon playerWeapon;
 
+    public int playerNumber;
+
     void Start()
     {
         initialPos = transform.position;
@@ -31,7 +33,9 @@ public class Character_Controller : MonoBehaviour
     void OnEnable()
     {
         GameManager.Instance.OnGameStateChange += Instance_OnGameStateChange;
+        GameManager.Instance.OnResetCharacter += Instance_OnResetCharacter;
     }
+
 
     //void OnDisable()
     //{
@@ -47,7 +51,7 @@ public class Character_Controller : MonoBehaviour
                 //playerRigidBody.velocity = new Vector2(Input.GetAxis(playerMoveInput_Name) * speed, playerRigidBody.velocity.y);
                 Vector3 boatAngle = Boat.transform.right;
 
-                Debug.Log(boatAngle);
+                //Debug.Log(boatAngle);
                 if(Grounded)
                 {
                     Vector2 boatVelocity = boatAngle * playerSpeed * Input.GetAxis(playerMoveInputController_Name);
@@ -105,4 +109,11 @@ public class Character_Controller : MonoBehaviour
                 break;
         }
     }
+
+    private void Instance_OnResetCharacter()
+    {
+        transform.position = initialPos;
+    }
+
+
 }

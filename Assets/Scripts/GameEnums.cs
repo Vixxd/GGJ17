@@ -8,6 +8,7 @@ public class GameEnums
     {
         Start,
         Game,
-        GameOver
+        GameOver,
+        Reset
     }
 }
