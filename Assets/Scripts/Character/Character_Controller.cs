@@ -6,7 +6,8 @@ public class Character_Controller : MonoBehaviour
 {
     public string playerMoveInput_Name, playerJumpInput_Name;
     public string playerMoveInputController_Name, playerJumpInputController_Name;
-    public string playerFireInput_Name, playerFireInputController_Name;
+    public string playerFire1Input_Name, playerFire1InputController_Name;
+    public string playerFire2Input_Name, playerFire2InputController_Name;
 
     public Rigidbody2D playerRigidBody;
     public GameObject Boat;
@@ -19,7 +20,7 @@ public class Character_Controller : MonoBehaviour
 
     private Vector2 initialPos;
 
-    public BaseWeapon playerWeapon;
+    public BaseWeapon playerWeapon1, playerWeapon2;
 
     public int playerNumber;
 
@@ -70,9 +71,14 @@ public class Character_Controller : MonoBehaviour
                     playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5);
                 }
 
-                if(Input.GetAxis(playerFireInputController_Name) > 0)
+                if(Input.GetAxis(playerFire1InputController_Name) > 0)
                 {
-                    playerWeapon.OnFire();
+                    playerWeapon1.OnFire();
+                }
+
+                if (Input.GetAxis(playerFire2InputController_Name) > 0)
+                {
+                    playerWeapon2.OnFire();
                 }
             }
 
@@ -97,10 +103,14 @@ public class Character_Controller : MonoBehaviour
             case GameEnums.GameState.Start:
                 canMove = false;
                 transform.position = initialPos;
+
+                playerRigidBody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
                 break;
             case GameEnums.GameState.Game:
                 canMove = true;
                 isAlive = true;
+
+                playerRigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
                 break;
             case GameEnums.GameState.GameOver:
                 canMove = false;
