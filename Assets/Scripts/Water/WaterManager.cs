@@ -33,9 +33,10 @@ public class WaterManager : MonoBehaviour
     public int waveType = 0;
     public float lerpSpeed = 2.0f;
 
+    private bool isLerping;
+
     private int _CurrentWaveType =0;
     private int _NewWaveType = 0;
-    private float _NewWaveTypeSwapPos = 0;
     private bool _SwapingWaveType;
     private float _elementwidth;
     //constants
@@ -91,7 +92,9 @@ public class WaterManager : MonoBehaviour
     {
         targetWaveTarget = clamSeas;
         currentWaves = clamSeas;
-        SpawnWater(-10, 20, 0, -10);
+        Vector3 left = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane));
+        Vector3 Right = Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth, Camera.main.pixelHeight, Camera.main.nearClipPlane));
+        SpawnWater(left.x, Right.x-left.x, 0, -10);
         
     }
 
@@ -205,18 +208,6 @@ public class WaterManager : MonoBehaviour
             _waterElements[i].Y = LerpingWave(_waterElements[i].X);
             _lineRenederer.SetPosition(i, new Vector3(_waterElements[i].X, _waterElements[i].Y, z));
         }
-        if (_SwapingWaveType)
-        {
-            _NewWaveTypeSwapPos -= _elementwidth;
-            if (_NewWaveTypeSwapPos<0-(_width/2))
-            {
-                _SwapingWaveType = false;
-                _CurrentWaveType = _NewWaveType;
-
-            }
-        }
-
-
     }
 
 
@@ -245,6 +236,7 @@ public class WaterManager : MonoBehaviour
                 break;
         }
 
+        isLerping = true;
         StartCoroutine(LerpToNewWaveTarget());
 
     }
@@ -256,7 +248,7 @@ public class WaterManager : MonoBehaviour
         waveTarget origWaves = new waveTarget(currentWaves.amplitudeReduction, currentWaves.speed,
             currentWaves.HeightMultiplyer);
 
-        while (timeremaining > 0)
+        while (timeremaining > 0 && isLerping)
         {
             timeremaining -= Time.deltaTime;
            
@@ -268,8 +260,8 @@ public class WaterManager : MonoBehaviour
 
             currentWaves.HeightMultiplyer = Mathf.Lerp(targetWaveTarget.HeightMultiplyer, origWaves.HeightMultiplyer,t);
 
-           // Debug.Log("Currentspeed: " + currentWaves.speed + " orig speed: " + origWaves.speed + " target speed: " +
-                   //     targetWaveTarget.speed);
+            Debug.Log("Currentspeed: " + currentWaves.speed + " orig speed: " + origWaves.speed + " target speed: " +
+                       targetWaveTarget.speed);
 
            //Debug.Log("amp reduction : " + currentWaves.amplitudeReduction + " orig amp reduction: " + origWaves.amplitudeReduction + " target amp reduction: " +
                 //        targetWaveTarget.amplitudeReduction);
@@ -306,11 +298,20 @@ public class WaterManager : MonoBehaviour
             
         }else if (gameState == GameEnums.GameState.GameOver)
         {
-            lerpSpeed = 20.0f;
-            LerpToWave(0);
+            lerpSpeed = 10.0f;
+            isLerping = false;
+            StartCoroutine(LerpReset());
         }
     }
-}
+
+    private IEnumerator LerpReset()
+    {
+        yield return new WaitForSeconds(0.2f);
+        LerpToWave(0);
+    }
+    
+    }
+
 
 
 /*  private float SelectWave(float x, int _waveType)
