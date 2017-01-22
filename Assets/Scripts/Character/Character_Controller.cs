@@ -72,6 +72,14 @@ public class Character_Controller : MonoBehaviour
                         if (Input.GetAxis(playerMoveInputController_Name) != 0)
                         {
                             Walking = true;
+                            if(Input.GetAxis(playerMoveInputController_Name) > 0)
+                            {
+                                transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
+                            }
+                            else
+                            {
+                                transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
+                            }
                         }
                         else
                         {
