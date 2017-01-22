@@ -34,8 +34,8 @@ public class PushWeapon : BaseWeapon
         AudioSource.PlayOneShot(Attack_Sound);
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(transform.DOScale(new Vector3(4, 4, 4), FireTimePeriod));
-        seq.Append(transform.DOScale(new Vector3(1, 1, 1), FireTimePeriod/10));
+        seq.Append(transform.DOScale(new Vector3(1, 1, 1), FireTimePeriod));
+        seq.Append(transform.DOScale(new Vector3(0f, 0f, 0f), FireTimePeriod/10));
         seq.Play();
 
         yield return new WaitForSeconds(FireTimePeriod + FireRechargeDelayTime);
