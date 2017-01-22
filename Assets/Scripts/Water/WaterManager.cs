@@ -252,8 +252,8 @@ public class WaterManager : MonoBehaviour
 
             currentWaves.HeightMultiplyer = Mathf.Lerp(targetWaveTarget.HeightMultiplyer, origWaves.HeightMultiplyer, t);
 
-            Debug.Log("Currentspeed: " + currentWaves.speed + " orig speed: " + origWaves.speed + " target speed: " +
-                 targetWaveTarget.speed);
+            //Debug.Log("Currentspeed: " + currentWaves.speed + " orig speed: " + origWaves.speed + " target speed: " +
+            //     targetWaveTarget.speed);
 
             //Debug.Log("amp reduction : " + currentWaves.amplitudeReduction + " orig amp reduction: " + origWaves.amplitudeReduction + " target amp reduction: " +
             //        targetWaveTarget.amplitudeReduction);

@@ -11,7 +11,7 @@ public class Player_Push_FillCircle : MonoBehaviour
 
     private Image pushFillCircle;
 
-    void Start ()
+    void Awake()
     {
         pushFillCircle = gameObject.GetComponent<Image>();
     }
@@ -20,10 +20,13 @@ public class Player_Push_FillCircle : MonoBehaviour
     {
         playerPushWeapon = (PushWeapon)Character_Controller.playerWeapon1;
         playerPushWeapon.OnFire += PlayerPushWeapon_OnFire;
+
+        pushFillCircle.fillAmount = 1f;
     }
 
     private void PlayerPushWeapon_OnFire()
     {
+        StopAllCoroutines();
         StartCoroutine(decayPushWeaponFillCircle());
     }
 
@@ -31,6 +34,7 @@ public class Player_Push_FillCircle : MonoBehaviour
     {
         while (pushFillCircle.fillAmount > 0)
         {
+            Debug.Log("YUYUYUYUYUYUY");
             pushFillCircle.fillAmount -= (1 / playerPushWeapon.FireTimePeriod) * Time.deltaTime;
             yield return null;
         }

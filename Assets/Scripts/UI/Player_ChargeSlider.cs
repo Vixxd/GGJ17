@@ -11,7 +11,7 @@ public class Player_ChargeSlider : MonoBehaviour
 
     private Slider chargeSlider;
 
-	void Start()
+	void Awake()
     {
         chargeSlider = gameObject.GetComponent<Slider>();
     }
@@ -20,10 +20,13 @@ public class Player_ChargeSlider : MonoBehaviour
     {
         playerChargeWeapon = (ChargeWeapon) Character_Controller.playerWeapon2;
         playerChargeWeapon.OnFire += PlayerChargeWeapon_OnFire;
+
+        chargeSlider.value = 1f;
     }
 
     private void PlayerChargeWeapon_OnFire()
     {
+        StopAllCoroutines();
         StartCoroutine(decayChargeWeaponSlider());
     }
 
