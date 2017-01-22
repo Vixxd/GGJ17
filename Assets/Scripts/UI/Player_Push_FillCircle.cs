@@ -34,7 +34,6 @@ public class Player_Push_FillCircle : MonoBehaviour
     {
         while (pushFillCircle.fillAmount > 0)
         {
-            Debug.Log("YUYUYUYUYUYUY");
             pushFillCircle.fillAmount -= (1 / playerPushWeapon.FireTimePeriod) * Time.deltaTime;
             yield return null;
         }

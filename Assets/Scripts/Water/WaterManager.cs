@@ -89,7 +89,7 @@ public class WaterManager : MonoBehaviour
         Vector3 Right =
             Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth, Camera.main.pixelHeight,
                 Camera.main.nearClipPlane));
-        SpawnWater(left.x, Right.x - left.x, 0, -10);
+        SpawnWater(left.x-5, (Right.x - left.x)+10, 0, -10);
 
     }
 

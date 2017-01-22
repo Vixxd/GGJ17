@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class PushWeapon : BaseWeapon
 {
+    public GameObject ShakeCamera;
     public float pushedForTime = 1f;
 
     void Start()
@@ -52,6 +53,8 @@ public class PushWeapon : BaseWeapon
     {
         if(col.gameObject.tag == "Player")
         {
+            ShakeCamera.GetComponent<ScreenShake>().shakeDuration = 0.1f;
+
             Vector3 otherPosition = col.transform.position;
             Vector3 diffPosition = transform.position - otherPosition;
 
