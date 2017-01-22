@@ -9,6 +9,9 @@ public class BaseWeapon : MonoBehaviour
     public float FireTimePeriod;
     public float FireRechargeDelayTime;
 
+    public AudioSource AudioSource;
+    public AudioClip Attack_Sound;
+
     protected bool canFire = true;
 
     public delegate void OnFireEvent();

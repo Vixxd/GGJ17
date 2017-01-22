@@ -11,6 +11,8 @@ public class DeathManager : MonoBehaviour
     public bool infiniteLives;
     public Text VictoryText;
 
+    public Text Player1Lives;
+    public Text Player2Lives;
 
     public int p1Lives;
     public int p2Lives;
@@ -43,10 +45,12 @@ public class DeathManager : MonoBehaviour
             if (other.GetComponent<Character_Controller>().playerNumber == 1)
             {
                 p1Lives--;
+                Player1Lives.text = p1Lives.ToString();
             }
             else
             {
                 p2Lives--;
+                Player2Lives.text = p2Lives.ToString();
             }
 
             if ((p1Lives < 1 || p2Lives < 1) && !infiniteLives)
@@ -58,7 +62,7 @@ public class DeathManager : MonoBehaviour
                 }
                 else if (p2Lives > 0)
                 {
-                    VictoryText.text = "Player 1 Wins!";
+                    VictoryText.text = "Player 2 Wins!";
                 }
                 else
                 {

@@ -10,6 +10,8 @@ public class PushWeapon : BaseWeapon
 
     void Start()
     {
+        AudioSource = gameObject.GetComponent<AudioSource>();
+
         FireTimePeriod = 0.1f;
         FireRechargeDelayTime = 2f;
     }
@@ -27,6 +29,8 @@ public class PushWeapon : BaseWeapon
     private IEnumerator fireWeapon()
     {
         canFire = false;
+
+        AudioSource.PlayOneShot(Attack_Sound);
 
         Sequence seq = DOTween.Sequence();
         seq.Append(transform.DOScale(new Vector3(4, 4, 4), FireTimePeriod));

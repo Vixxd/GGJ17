@@ -10,6 +10,8 @@ public class ChargeWeapon : BaseWeapon
 
     void Start()
     {
+        AudioSource = gameObject.GetComponent<AudioSource>();
+
         FireTimePeriod = 2f;
         FireRechargeDelayTime = 3f;
     }
@@ -26,6 +28,9 @@ public class ChargeWeapon : BaseWeapon
     private IEnumerator fireWeapon()
     {
         canFire = false;
+
+        AudioSource.PlayOneShot(Attack_Sound);
+
         float originalSpeed = Character_Controller.playerSpeed;
 
         Character_Controller.playerSpeed = originalSpeed * PlayerSpeedModifier;

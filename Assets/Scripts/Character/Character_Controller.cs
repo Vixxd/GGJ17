@@ -36,6 +36,7 @@ public class Character_Controller : MonoBehaviour
     {
         initialPos = transform.position;
         PlayerAnimator = gameObject.GetComponent<Animator>();
+        AudioSource = gameObject.GetComponent<AudioSource>();
 
         StartCoroutine(getPlayerInput());
 	}
@@ -99,7 +100,7 @@ public class Character_Controller : MonoBehaviour
 
                     playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5);
 
-                    //AudioSource.PlayOneShot(Jump_Sound);
+                    AudioSource.PlayOneShot(Jump_Sound);
                 }
 
                 if (Input.GetAxis(playerJumpInputController_Name) > 0 && Grounded)
@@ -112,19 +113,17 @@ public class Character_Controller : MonoBehaviour
                     //playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInput_Name) * 5);
                     playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5);
 
-                    //AudioSource.PlayOneShot(Jump_Sound);
+                    AudioSource.PlayOneShot(Jump_Sound);
                 }
 
                 if (Input.GetAxis(playerFire1InputController_Name) > 0)
                 {
                     playerWeapon1.FireWeapon();
-                    //AudioSource.PlayOneShot(Attack_Sound);
                 }
 
                 if (Input.GetAxis(playerFire2InputController_Name) > 0)
                 {
                     playerWeapon2.FireWeapon();
-                    //AudioSource.PlayOneShot(Attack_Sound);
                 }
             }
 
@@ -150,7 +149,12 @@ public class Character_Controller : MonoBehaviour
 
             GameManager.Instance.TriggerOnGameStateChange(GameEnums.GameState.GameOver);
         }
-        else if(col.gameObject.tag == "Water")
+
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Water")
         {
             AudioSource.PlayOneShot(Splash_Sound);
         }
