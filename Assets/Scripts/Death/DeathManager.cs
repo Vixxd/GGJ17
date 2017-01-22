@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DeathManager : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class DeathManager : MonoBehaviour
     public float ResetTime = 1.0f;
     public int Lives = 3;
     public bool infiniteLives;
+    public Text VictoryText;
+
 
     public int p1Lives;
     public int p2Lives;
@@ -21,8 +24,8 @@ public class DeathManager : MonoBehaviour
 
     // Use this for initialization
     void Start ()
-	{
-        
+    {
+        VictoryText.text = "";
         p1Lives = Lives;
 	    p2Lives = Lives;
 	}
@@ -48,6 +51,17 @@ public class DeathManager : MonoBehaviour
             if ((p1Lives < 1 || p2Lives < 1)&&!infiniteLives)
             {
                 //do game over
+                if (p1Lives > 0)
+                {
+                    VictoryText.text = "Player 1 Wins!";
+                }else if (p2Lives > 0)
+                {
+                    VictoryText.text = "Player 1 Wins!";
+                }
+                else
+                {
+                    VictoryText.text = "Draw!";
+                }
                 GameManager.Instance.TriggerOnGameStateChange(GameEnums.GameState.GameOver);
             }
             else
@@ -68,6 +82,7 @@ public class DeathManager : MonoBehaviour
     {
         if (gameState == GameEnums.GameState.Game)
         {
+            VictoryText.text = "";
             p1Lives = Lives*2;
             p2Lives = Lives;
         }
