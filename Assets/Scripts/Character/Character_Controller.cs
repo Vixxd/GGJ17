@@ -60,7 +60,7 @@ public class Character_Controller : MonoBehaviour
                 Vector3 boatAngle = Boat.transform.right;
 
                 //Debug.Log(boatAngle);
-                if(!Pushed)
+                if (!Pushed)
                 {
                     if (Grounded)
                     {
@@ -82,11 +82,6 @@ public class Character_Controller : MonoBehaviour
                     }
                 }
 
-                //if(Pushed)
-                //{
-                //    playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, playerRigidBody.velocity.y);
-                //}
-
                 if (Input.GetAxis(playerJumpInputController_Name) > 0 && Grounded)
                 {
                     Grounded = false;
@@ -95,19 +90,19 @@ public class Character_Controller : MonoBehaviour
                     //playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInput_Name) * 5);
                     playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5);
 
-                    AudioSource.PlayOneShot(Jump_Sound);
+                    //AudioSource.PlayOneShot(Jump_Sound);
                 }
 
                 if(Input.GetAxis(playerFire1InputController_Name) > 0)
                 {
                     playerWeapon1.FireWeapon();
-                    AudioSource.PlayOneShot(Attack_Sound);
+                    //AudioSource.PlayOneShot(Attack_Sound);
                 }
 
                 if (Input.GetAxis(playerFire2InputController_Name) > 0)
                 {
                     playerWeapon2.FireWeapon();
-                    AudioSource.PlayOneShot(Attack_Sound);
+                    //AudioSource.PlayOneShot(Attack_Sound);
                 }
             }
 
