@@ -19,11 +19,9 @@ public class DeathManager : MonoBehaviour
 
     void OnEnable()
     {
-        GameManager.Instance.OnGameStateChange += Instance_OnGameStateChange; ;
+        GameManager.Instance.OnGameStateChange += Instance_OnGameStateChange;
     }
-
-
-
+    
     // Use this for initialization
     void Start()
     {
@@ -91,6 +89,8 @@ public class DeathManager : MonoBehaviour
             VictoryText.text = "";
             p1Lives = Lives;
             p2Lives = Lives;
+            Player1Lives.text = p1Lives.ToString();
+            Player2Lives.text = p2Lives.ToString();
         }
     }
 }
