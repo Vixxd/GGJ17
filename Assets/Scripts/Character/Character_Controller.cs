@@ -17,12 +17,14 @@ public class Character_Controller : MonoBehaviour
     public GameObject Boat;
 
     public float playerSpeed = 10f;
+    public float DoubleJumpDelay = 1f;
     public bool Grounded = false;
     public bool Pushed = false;
     public bool Walking = false;
 
     private bool canMove = false;
     private bool isAlive = true;
+    private bool canDoubleJump = false;
 
     private Vector2 initialPos;
 
@@ -82,10 +84,22 @@ public class Character_Controller : MonoBehaviour
                     }
                 }
 
+                if(Input.GetAxis(playerJumpInputController_Name) > 0 && !Grounded && canDoubleJump && !Pushed)
+                {
+                    Debug.Log("ASDASDOLOPPOPOPO");
+                    canDoubleJump = false;
+
+                    playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5);
+
+                    //AudioSource.PlayOneShot(Jump_Sound);
+                }
+
                 if (Input.GetAxis(playerJumpInputController_Name) > 0 && Grounded)
                 {
                     Grounded = false;
                     Pushed = false;
+
+                    StartCoroutine(delayCanDoubleJump());
 
                     //playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInput_Name) * 5);
                     playerRigidBody.velocity = new Vector2(playerRigidBody.velocity.x, Input.GetAxis(playerJumpInputController_Name) * 5);
@@ -93,7 +107,7 @@ public class Character_Controller : MonoBehaviour
                     //AudioSource.PlayOneShot(Jump_Sound);
                 }
 
-                if(Input.GetAxis(playerFire1InputController_Name) > 0)
+                if (Input.GetAxis(playerFire1InputController_Name) > 0)
                 {
                     playerWeapon1.FireWeapon();
                     //AudioSource.PlayOneShot(Attack_Sound);
@@ -112,6 +126,12 @@ public class Character_Controller : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private IEnumerator delayCanDoubleJump()
+    {
+        yield return new WaitForSeconds(DoubleJumpDelay);
+        canDoubleJump = true;
     }
 
     void OnCollisionEnter2D(Collision2D col)
