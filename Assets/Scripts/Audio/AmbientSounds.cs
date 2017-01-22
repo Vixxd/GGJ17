@@ -20,16 +20,37 @@ public class AmbientSounds : MonoBehaviour {
         AudioSource.Play();
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     private void Instance_OnGameStateChange(GameEnums.GameState gameState)
     {
         if (gameState == GameEnums.GameState.Game)
         {
-            AudioSource.PlayOneShot(StartSound); 
+            PlayStartSound();
+            StartCoroutine(ReturnToBackGround());
         }
+    }
+
+    private void PlayStartSound()
+    {
+        AudioSource.clip = StartSound;
+        AudioSource.loop = false;
+        AudioSource.Play();
+    }
+
+    private void PlayBackground()
+    {
+        AudioSource.clip = BackGroundSound;
+        AudioSource.loop = true;
+        AudioSource.Play();
+    }
+
+    private IEnumerator ReturnToBackGround()
+    {
+        while (AudioSource.isPlaying)
+        {
+            yield return null;
+        }
+
+        PlayBackground();
     }
 }
